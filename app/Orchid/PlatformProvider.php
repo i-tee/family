@@ -34,6 +34,7 @@ class PlatformProvider extends OrchidServiceProvider
     public function menu(): array
     {
         return [
+            /*
             Menu::make('Get Started')
                 ->icon('bs.book')
                 ->title('Navigation')
@@ -46,8 +47,7 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make('Form Elements')
                 ->icon('bs.card-list')
-                ->route('platform.example.fields')
-                ->active('*/examples/form/*'),
+                ->route('platform.example.fields'),
 
             Menu::make('Overview Layouts')
                 ->icon('bs.window-sidebar')
@@ -65,6 +65,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->icon('bs.card-text')
                 ->route('platform.example.cards')
                 ->divider(),
+            */
 
             Menu::make(__('Users'))
                 ->icon('bs.people')
@@ -77,7 +78,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->route('platform.systems.roles')
                 ->permission('platform.systems.roles')
                 ->divider(),
-
+            /*
             Menu::make('Documentation')
                 ->title('Docs')
                 ->icon('bs.box-arrow-up-right')
@@ -89,6 +90,7 @@ class PlatformProvider extends OrchidServiceProvider
                 ->url('https://github.com/orchidsoftware/platform/blob/master/CHANGELOG.md')
                 ->target('_blank')
                 ->badge(fn () => Dashboard::version(), Color::DARK),
+            */
         ];
     }
 
