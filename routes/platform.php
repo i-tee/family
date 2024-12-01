@@ -102,3 +102,21 @@ Route::screen('/examples/charts', ExampleChartsScreen::class)->name('platform.ex
 Route::screen('/examples/cards', ExampleCardsScreen::class)->name('platform.example.cards');
 
 //Route::screen('idea', Idea::class, 'platform.screens.idea');
+
+use App\Orchid\Screens\PersonEditScreen;
+use App\Orchid\Screens\PersonListScreen;
+
+Route::screen('person/{person?}', PersonEditScreen::class)
+    ->name('platform.person.edit');
+
+Route::screen('persons', PersonListScreen::class)
+    ->name('platform.person.list');
+
+use App\Orchid\Screens\TreeEditScreen;
+use App\Orchid\Screens\TreeListScreen;
+
+Route::screen('tree/{tree?}', TreeEditScreen::class)
+    ->name('platform.tree.edit');
+
+Route::screen('trees', TreeListScreen::class)
+    ->name('platform.tree.list');
