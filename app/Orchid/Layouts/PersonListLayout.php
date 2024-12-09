@@ -18,7 +18,7 @@ class PersonListLayout extends Table
             TD::make('first_name', 'Name')
                 ->render(function (Person $person) {
                     return Link::make($person->first_name)
-                        ->route('platform.post.edit', $person);
+                        ->route('platform.person.edit', $person);
                 }),
 
             TD::make('created_at', 'Created'),
