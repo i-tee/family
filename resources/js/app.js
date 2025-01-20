@@ -1,5 +1,9 @@
-import Alpine from 'alpinejs';
+// import Alpine from 'alpinejs';
+// window.Alpine = Alpine;
+// Alpine.start();
 
-window.Alpine = Alpine;
+import { createApp } from 'vue';
 
-Alpine.start();
+import ExampleComponent from './components/ExampleComponent.vue';
+const app = createApp(ExampleComponent);
+app.mount('#app');

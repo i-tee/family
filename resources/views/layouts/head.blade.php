@@ -6,6 +6,9 @@
 
     <title>{{ config('app.name') }}</title>
 
+    <!-- ViteStart -->
     @vite(['resources/css/app.css', 'resources/js/app.js'])
+    
+    <!-- ViteEnd -->
 
 </head>

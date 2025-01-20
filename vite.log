@@ -1,0 +1,24 @@
+nohup: ignoring input
+
+> dev
+> vite
+
+
+  VITE v5.4.11  ready in 429 ms
+
+  ➜  Local:   https://localhost:5173/
+  ➜  Network: https://5.35.91.175:5173/
+
+  LARAVEL v11.33.2  plugin v1.1.1
+
+  ➜  APP_URL: http://localhost
+6:35:04 PM [vite] hmr update /resources/js/components/ExampleComponent.vue
+6:35:04 PM [vite] hmr update /resources/js/components/ExampleComponent.vue
+6:35:57 PM [vite] hmr update /resources/css/app.css?direct
+6:35:58 PM [vite] hmr update /resources/css/app.css?direct
+6:36:11 PM [vite] hmr update /resources/css/app.css?direct
+6:36:11 PM [vite] hmr update /resources/css/app.css?direct
+6:36:41 PM [vite] hmr update /resources/css/app.css?direct
+6:36:41 PM [vite] hmr update /resources/css/app.css?direct
+6:36:57 PM [vite] hmr update /resources/js/components/ExampleComponent.vue
+6:36:57 PM [vite] hmr update /resources/js/components/ExampleComponent.vue
