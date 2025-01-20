@@ -1,3 +1,13 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import 'bootstrap/dist/css/bootstrap.min.css';
+
+.body-wrapper {
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh; /* Минимальная высота — 100% высоты экрана */
+}
+html, body {
+    height: 100%; /* Занимаем всю высоту экрана */
+}
+.flex-content {
+    flex: 1; /* Растягиваем контент, чтобы футер был прижат к низу */
+}
