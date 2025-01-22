@@ -98,12 +98,12 @@ class PersonEditScreen extends Screen
                     ->title('Middle Name') // Изменено на "Middle Name"
                     ->placeholder('Enter middle name'),
 
-                DateTimer::make('person.date_of_birth')
+                DateTimer::make('person.birth_date')
                     ->title('Date of Birth')
                     ->placeholder('Select date of birth')
                     ->required(),
 
-                DateTimer::make('person.date_of_death')
+                DateTimer::make('person.death_date')
                     ->title('Date of Death')
                     ->placeholder('Select date of death'),
 
