@@ -9,6 +9,37 @@ use Orchid\Platform\Models\User as Authenticatable;
 
 class User extends Authenticatable
 {
+
+    /**
+     * Проверяет, есть ли у пользователя дерево.
+     *
+     * @return bool
+     */
+    public function hasTree()
+    {
+        return $this->trees()->exists();
+    }
+
+    /**
+     * Получить список деревьев пользователя.
+     *
+     * @return \Illuminate\Database\Eloquent\Collection
+     */
+    public function getTrees()
+    {
+        return $this->trees;
+    }
+
+    /**
+     * Отношение "один ко многим" с моделью Tree.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\HasMany
+     */
+    public function trees()
+    {
+        return $this->hasMany(Tree::class);
+    }
+
     /**
      * The attributes that are mass assignable.
      *
