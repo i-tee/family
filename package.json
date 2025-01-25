@@ -17,12 +17,15 @@
         "vite": "^5.4.11"
     },
     "dependencies": {
+        "@iconscout/unicons": "^4.2.0",
         "@popperjs/core": "^2.11.8",
         "@tailwindcss/forms": "^0.3.0",
         "@vitejs/plugin-vue": "^5.2.1",
         "autoprefixer": "^10.0.0",
         "bootstrap": "^5.3.3",
+        "bootstrap-icons": "^1.11.3",
         "postcss": "^8.0.0",
+        "svgo": "^3.3.2",
         "vue": "^3.5.13"
     }
 }

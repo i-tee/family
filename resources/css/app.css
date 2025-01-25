@@ -1,4 +1,8 @@
 @import 'bootstrap/dist/css/bootstrap.min.css';
+/* Import Unicons */
+@import '@iconscout/unicons/css/line.css';
+/* Import Bootstrap Icons */
+@import 'bootstrap-icons/font/bootstrap-icons.css';
 
 .body-wrapper {
     display: flex;

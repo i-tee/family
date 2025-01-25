@@ -6,16 +6,19 @@ use Orchid\Filters\Types\Like;
 use Orchid\Filters\Types\Where;
 use Orchid\Filters\Types\WhereDateStartEnd;
 use Orchid\Platform\Models\User as Authenticatable;
+use Laravel\Sanctum\HasApiTokens;
 
 class User extends Authenticatable
 {
+
+    use HasApiTokens; // Добавь этот трейт
 
     /**
      * Проверяет, есть ли у пользователя дерево.
      *
      * @return bool
      */
-    public function hasTree()
+     public function hasTree()
     {
         return $this->trees()->exists();
     }

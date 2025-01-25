@@ -1,14 +1,8 @@
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    @if($userTrees->isNotEmpty())
-        <ul>
-            @foreach($userTrees as $tree)
-                <li>{{ $tree->name }}</li>
-            @endforeach
-        </ul>
-    @else
-        <span>У вас пока нет дерева</span>
-    @endif
+    <li class="nav-item">
+        <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
+    </li>
 
 </ul>
 <div class="row align-items-center">
