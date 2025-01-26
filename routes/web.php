@@ -1,26 +1,25 @@
 <?php
 
-use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\TreeController;
+
+require __DIR__ . '/auth.php';
 
 Route::get('/', function () {
     return view('welcome');
 });
 
 use App\Http\Controllers\DashboardController;
-Route::get('/dashboard', [DashboardController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('dashboard');
 
-Route::get('/family-tree', [TreeController::class, 'index'])
-    ->middleware(['auth', 'verified'])
-    ->name('family-tree');
+Route::middleware(['auth', 'verified'])->group(function () {
 
-Route::middleware('auth')->group(function () {
-    Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-    Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-    Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
+    Route::get('/dashboard', [DashboardController::class, 'index'])->name('dashboard');
+
+    // Группа маршрутов для /dashboard/tree
+    Route::prefix('dashboard/tree')->group(function () {
+
+        Route::get('/', [DashboardController::class, 'chooseTree'])->name('dashboard.tree.choose');
+        Route::get('/{id}', [DashboardController::class, 'showTree'])->name('dashboard.tree.show');
+
+    });
+
 });
-
-require __DIR__ . '/auth.php';

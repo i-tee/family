@@ -1,23 +1,50 @@
 <template>
-  <div>
+  <div class="container mt-4">
     <h1>Деревья</h1>
-    <ul>
-      <li v-for="tree in trees" :key="tree.id">
-        {{ tree.name }}
-        <button @click="editTree(tree.id)">Редактировать</button>
-        <button @click="deleteTree(tree.id)">Удалить</button>
-      </li>
-    </ul>
-    <button @click="showCreateForm">Создать новое дерево</button>
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">ID</th>
+          <th scope="col">Название</th>
+          <th scope="col">Действия</th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr v-for="tree in trees" :key="tree.id">
+          <td>{{ tree.id }}</td>
+          <td>{{ tree.name }}</td>
+          <td>
+            <a :href="`/dashboard/tree/${tree.id}`" class="btn btn-primary btn-sm">
+              <i class="bi bi-arrow-right"></i>
+            </a>
+            <button @click="editTree(tree.id)" class="btn btn-warning btn-sm">
+              <i class="bi bi-pencil"></i>
+            </button>
+            <button @click="deleteTree(tree.id)" class="btn btn-danger btn-sm">
+              <i class="bi bi-trash"></i>
+            </button>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+    <button @click="showCreateForm" class="btn btn-success">
+      <i class="bi bi-plus-lg"></i> Создать новое дерево
+    </button>
 
     <!-- Форма для создания/редактирования -->
-    <div v-if="showForm">
+    <div v-if="showForm" class="mt-4">
       <h2>{{ isEdit ? 'Редактировать дерево' : 'Создать новое дерево' }}</h2>
-      <form @submit.prevent="submitForm">
-        <label for="name">Название:</label>
-        <input type="text" id="name" v-model="tree.name" required>
-        <button type="submit">{{ isEdit ? 'Обновить' : 'Создать' }}</button>
-        <button type="button" @click="cancelForm">Отмена</button>
+      <form @submit.prevent="submitForm" class="form-inline">
+        <div class="form-group mb-2">
+          <label for="name" class="sr-only">Название:</label>
+          <input type="text" id="name" v-model="tree.name" class="form-control" placeholder="Название" required>
+        </div>
+        <button type="submit" class="btn btn-primary mb-2">
+          <i class="bi" :class="isEdit ? 'bi-arrow-clockwise' : 'bi-check-lg'"></i> {{ isEdit ? 'Обновить' : 'Создать' }}
+        </button>
+        <button type="button" @click="cancelForm" class="btn btn-secondary mb-2">
+          <i class="bi bi-x-lg"></i> Отмена
+        </button>
       </form>
     </div>
   </div>

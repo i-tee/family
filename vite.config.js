@@ -17,6 +17,11 @@ export default defineConfig({
             key: fs.readFileSync(path.resolve('/home/itee/conf/web/family.tee.su/ssl/family.tee.su.key')), // Приватный ключ
             cert: fs.readFileSync(path.resolve('/home/itee/conf/web/family.tee.su/ssl/family.tee.su.pem')), // Сертификат
         },
+        cors: {
+            origin: '*', // Разрешить запросы с любого домена
+            methods: 'GET,HEAD,PUT,PATCH,POST,DELETE', // Разрешенные методы
+            credentials: true, // Разрешить передачу учетных данных (куки, заголовки авторизации)
+        }
     },
     plugins: [
         laravel({
