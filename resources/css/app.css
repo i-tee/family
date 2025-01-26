@@ -64,6 +64,17 @@ footer {
     /* Выравнивание текста по центру */
 }
 
+.canvas-info p {
+    margin-right: 10px;
+}
+.canvas-info {
+    display: inline-flex;
+}
+
+.wrapp-menu {
+    display: inline-flex;
+}
+
 div.menu {
     position: absolute;
     left: 0;
@@ -71,6 +82,7 @@ div.menu {
     top: 0;
     background: #ffffff;
     z-index: 1;
+    display: flex;
 }
 
 .canvas-container {
@@ -105,4 +117,14 @@ div.menu {
     cursor: pointer;
     user-select: none;
     /* Запретить выделение текста */
+}
+
+.map-index {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    min-height: 30px;
+    background: rgb(48, 48, 48);
+    color: #c2c2c2;
 }

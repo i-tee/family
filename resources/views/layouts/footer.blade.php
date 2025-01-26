@@ -1,5 +1,5 @@
-<footer class="bg-dark text-white text-center py-3 c-footer">
+<footer class="bg-dark text-white text-end py-2 c-footer fw-light text-dark">
     <div>
-        <p>&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }} from <a target="_blank" href="https://tee.su">tee.su</a></p>
+        <span>&copy; {{ date('Y') }} {{ config('app.name', 'Laravel') }} from <a target="_blank" href="https://tee.su">tee.su</a></span>
     </div>
 </footer>

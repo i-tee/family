@@ -1,11 +1,12 @@
 <template>
-    <div class="wrapp-menu p-2">
-        <div class="row">
-            <div class="col">
-                <span>[id:{{ tree.id }}] {{ tree.name }}</span>
-            </div>
-            <div class="col"></div>
+    <div class="wrapp-menu">
+        <div class="p-2">
+            <span>[id:{{ tree.id }}] {{ tree.name }}</span>
         </div>
+        <div class="p-2"></div>
+        <div class="p-2"></div>
+        <div class="p-2"></div>
+        <div class="p-2"></div>
     </div>
 </template>
 
@@ -18,7 +19,7 @@ export default {
     },
     data() {
         return {
-            tree: window.tree // Используем глобальную переменную
+            tree: window.tree
         };
     },
 };
