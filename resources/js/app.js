@@ -11,12 +11,21 @@ axios.defaults.baseURL = import.meta.env.VITE_VUE_APP_API_URL;
 axios.defaults.withCredentials = true;
 window.axios = axios;
 
-//vue.js
-
 import { createApp } from 'vue';
 
 import Person from './components/Person.vue';
 import Tree from './components/Tree.vue';
+import InteractiveCanvas from './components/InteractiveCanvas.vue';
 
-createApp(Person).mount('#appPerson');
-createApp(Tree).mount('#appTree');
+// Функция для безопасного монтирования приложения
+function mountApp(component, selector) {
+    const mountElement = document.querySelector(selector);
+    if (mountElement) {
+        createApp(component).mount(selector);
+    }
+}
+
+// Монтируем приложения только если их целевые элементы существуют
+mountApp(Person, '#appPerson');
+mountApp(Tree, '#appTree');
+mountApp(InteractiveCanvas, '#InteractiveCanvas');

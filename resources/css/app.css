@@ -4,14 +4,105 @@
 /* Import Bootstrap Icons */
 @import 'bootstrap-icons/font/bootstrap-icons.css';
 
+/* Общие стили для body и html */
+html,
+body {
+    height: 100%;
+    /* Занимаем всю высоту окна */
+    margin: 0;
+    /* Убираем отступы по умолчанию */
+    padding: 0;
+    /* Убираем отступы по умолчанию */
+}
+
+/* Контейнер, который занимает всю высоту страницы */
 .body-wrapper {
     display: flex;
+    /* Включаем Flexbox */
     flex-direction: column;
-    min-height: 100vh; /* Минимальная высота — 100% высоты экрана */
+    /* Располагаем элементы вертикально */
+    min-height: 100%;
+    /* Минимальная высота — вся страница */
 }
-html, body {
-    height: 100%; /* Занимаем всю высоту экрана */
+
+/* Main */
+main {
+    flex: 1;
+    /* Растягиваем main на все доступное пространство */
+    display: flex;
+    /* Включаем Flexbox для main */
+    flex-direction: column;
+    /* Располагаем элементы вертикально */
+    padding: 0;
+    /* Убираем отступы, чтобы InteractiveCanvas занимал все пространство */
 }
-.flex-content {
-    flex: 1; /* Растягиваем контент, чтобы футер был прижат к низу */
+
+/* InteractiveCanvas */
+.InteractiveCanvas {
+    flex: 1;
+    /* Растягиваем на оставшееся пространство */
+    background-color: #ddd;
+    /* Серый фон для наглядности */
+    display: flex;
+    /* Для центрирования содержимого (опционально) */
+    align-items: center;
+    /* Центрирование по вертикали (опционально) */
+    justify-content: center;
+    /* Центрирование по горизонтали (опционально) */
+    position: relative;
+}
+
+/* Footer */
+footer {
+    background-color: #333;
+    /* Темный фон */
+    color: white;
+    /* Белый текст */
+    padding: 10px 20px;
+    /* Отступы внутри */
+    text-align: center;
+    /* Выравнивание текста по центру */
+}
+
+div.menu {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    background: #ffffff;
+    z-index: 1;
+}
+
+.canvas-container {
+    position: absolute;
+    left: 0;
+    right: 0;
+    top: 0;
+    bottom: 0;
+    background: rgb(247, 247, 247);
+}
+
+.canvas {
+    position: absolute;
+    min-width: 5000px;
+    /* Минимальная ширина холста */
+    min-height: 5000px;
+    /* Минимальная высота холста */
+    background-color: rgba(240, 248, 255, 0.267);
+    background-image:
+        linear-gradient(rgba(128, 128, 128, 0.5) 2px, transparent 2px),
+        linear-gradient(90deg, rgba(128, 128, 128, 0.5) 2px, transparent 2px),
+        linear-gradient(rgba(128, 128, 128, 0.2) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(128, 128, 128, 0.2) 1px, transparent 1px);
+    background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
+    background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
+
+.block {
+    position: absolute;
+    border: 1px solid #000;
+    background-color: white;
+    cursor: pointer;
+    user-select: none;
+    /* Запретить выделение текста */
 }

@@ -1,9 +1,6 @@
 <x-app-layout>
-
-    <div class="p-3">
-
-        <h1>{{ $tree['name'] }}</h1>
-    
-    </div>
-    
+    <script>
+        window.tree = @json($tree);         
+    </script>
+    <div class="InteractiveCanvas" id="InteractiveCanvas">InteractiveCanvas</div>
 </x-app-layout>

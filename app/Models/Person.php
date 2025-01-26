@@ -19,6 +19,11 @@ class Person extends Model
         'birth_date',
         'death_date',
         'tree_id',
-    ];    
+    ];
+    
+    public function tree()
+    {
+        return $this->belongsTo(Tree::class);
+    }
 
 }
