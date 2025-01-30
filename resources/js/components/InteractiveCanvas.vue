@@ -2,14 +2,12 @@
   <div class="menu" id="appMenu">
     <Menu /> <!-- Используем дочерний компонент -->
   </div>
-  <div class="canvas-container" ref="canvasContainer">
+  <div id="windowcontainer" class="canvas-container" ref="canvasContainer" style="opacity: 0;">
     <div ref="canvas" class="canvas">
       <!-- Элементы внутри холста -->
-      <div v-for="(block, index) in blocks" :key="index" class="block" :style="{
+      <div v-for="(block, index) in blocks" :key="index" class="personBlock" :data-id="block.id" :style="{
         top: block.top + 'px',
         left: block.left + 'px',
-        width: block.width + 'px',
-        height: block.height + 'px',
       }" @click="selectBlock(block)">
         {{ block.text }}
       </div>
@@ -18,12 +16,10 @@
   <div class="map-index" id="map-index">
     <!-- Вывод информации о холсте -->
     <div class="canvas-info">
-      <span>Позиция холста: ({{ canvasX }}, {{ canvasY }})</span>
+      <span>Холст: ({{ canvasX }}, {{ canvasY }})</span>
       <span>Центр контейнера: ({{ containerCenterX }}, {{ containerCenterY }})</span>
-      <span>Точка центра холста: ({{ staticCenterX }}, {{ staticСenterY }})</span>
+      <span>Центр холста: ({{ staticCenterX }}, {{ staticСenterY }})</span>
     </div>
-    <!-- Кнопка для центрирования холста -->
-    <button @click="resetCanvas">Сбросить в 0</button>
     <!-- Поле для ввода координат и кнопка для центрирования -->
     <input type="number" v-model.number="targetX" placeholder="X">
     <input type="number" v-model.number="targetY" placeholder="Y">
@@ -32,149 +28,163 @@
 </template>
 
 <script>
-import Panzoom from '@panzoom/panzoom';
-import Menu from './dashboard/Menu.vue';
+import Panzoom from '@panzoom/panzoom'; // Импортируем библиотеку Panzoom для управления масштабированием и панорамированием
+import Menu from './dashboard/Menu.vue'; // Импортируем дочерний компонент Menu
+import { nextTick } from 'vue'; // Импортируем nextTick из Vue для работы с асинхронными обновлениями DOM
 
 export default {
   components: {
-    Menu, // Регистрируем дочерний компонент
+    Menu, // Регистрируем дочерний компонент Menu
   },
-  name: 'InteractiveCanvas',
+  name: 'InteractiveCanvas', // Имя компонента
   data() {
     return {
+      // Массив блоков, которые отображаются на холсте
       blocks: [
-        { id: 1, text: 'Блок 1', top: 300, left: 950, width: 60, height: 60 },
-        { id: 2, text: 'Блок 2', top: 200, left: 150, width: 120, height: 60 },
-        { id: 3, text: 'Центр?', top: 200, left: 300, width: 80, height: 40 },
+        { id: 1, text: 'Центр Тута!', top: 2400, left: 2000 },
       ],
-      selectedBlock: null,
-      tree: window.tree, // Используем глобальную переменную
+      tree: window.tree,
+      persons: window.persons,
       canvasWidth: 0, // Ширина холста
       canvasHeight: 0, // Высота холста
-      canvasX: 0, // Позиция холста по X
-      canvasY: 0, // Позиция холста по Y
-      centerX: 0, // Координата X центра холста
-      centerY: 0, // Координата Y центра холста
-      staticCenterX: 0, // X центра холста
-      staticСenterY: 0, // Y центра холста
-      panzoomInstance: null, // Экземпляр Panzoom
-      dfX: 0, // Деволтный центр системы отсчёта X
-      dfY: 0, // Деволтный центр системы отсчёта Y
-      targetX: 0, // Целевая координата X
-      targetY: 0, // Целевая координата Y
-      containerWidth: 0, // Ширина контейнера
-      containerHeight: 0, // Высота контейнера
+      canvasX: 0, // Текущая позиция холста по оси X
+      canvasY: 0, // Текущая позиция холста по оси Y
+      staticCenterX: 0, // Координата X центра холста (без учета смещения)
+      staticСenterY: 0, // Координата Y центра холста (без учета смещения)
+      panzoomInstance: null, // Экземпляр Panzoom для управления холстом
+      targetX: 2331, // Целевая координата X для центрирования
+      targetY: 2475, // Целевая координата Y для центрирования
+      containerWidth: 0, // Ширина контейнера, в котором находится холст
+      containerHeight: 0, // Высота контейнера, в котором находится холст
       containerCenterX: 0, // Координата X центра контейнера
       containerCenterY: 0, // Координата Y центра контейнера
     };
   },
   methods: {
+    // Инициализация Panzoom для управления холстом
     initPanzoom() {
-      const canvas = this.$refs.canvas;
+      const canvas = this.$refs.canvas; // Получаем ссылку на элемент холста
       this.panzoomInstance = Panzoom(canvas, {
         maxScale: 5, // Максимальный масштаб
         minScale: 0.5, // Минимальный масштаб
       });
 
-      // Отслеживаем изменения позиции холста
+      // Отслеживаем изменения позиции и масштаба холста
       canvas.addEventListener('panzoomchange', (event) => {
-        const { x, y } = event.detail;
-        this.canvasX = x;
-        this.canvasY = y;
-        this.updateCanvasCenter(); // Обновляем координаты центра
+        const { x, y } = event.detail; // Получаем текущие координаты холста
+        this.canvasX = x; // Обновляем позицию холста по X
+        this.canvasY = y; // Обновляем позицию холста по Y
       });
     },
+
+    // Обработчик выбора блока на холсте
     selectBlock(block) {
-      this.selectedBlock = block;
-      console.log('Выбран блок:', block);
+      // Центрируем холст на координатах выбранного блока
       this.centerCanvasOnCoordinates(block.left, block.top);
     },
+
+    // Обновление размеров холста
     updateCanvasSize() {
-      const canvas = this.$refs.canvas;
-      this.canvasWidth = canvas.offsetWidth;
-      this.canvasHeight = canvas.offsetHeight;
-      this.updateCanvasCenter(); // Обновляем координаты центра
+      const canvas = this.$refs.canvas; // Получаем ссылку на элемент холста
+      this.canvasWidth = canvas.offsetWidth; // Обновляем ширину холста
+      this.canvasHeight = canvas.offsetHeight; // Обновляем высоту холста
     },
+
+    // Обновление размеров контейнера
     updateContainerSize() {
-      const container = this.$refs.canvasContainer;
-      this.containerWidth = container.offsetWidth;
-      this.containerHeight = container.offsetHeight;
+      const container = this.$refs.canvasContainer; // Получаем ссылку на контейнер
+      this.containerWidth = container.offsetWidth; // Обновляем ширину контейнера
+      this.containerHeight = container.offsetHeight; // Обновляем высоту контейнера
       this.updateContainerCenter(); // Обновляем координаты центра контейнера
     },
-    // Функция для обновления координат центра контейнера
+
+    // Обновление координат центра контейнера
     updateContainerCenter() {
-      this.containerCenterX = Math.ceil(this.containerWidth / 2);
-      this.containerCenterY = Math.ceil(this.containerHeight / 2);
+      this.containerCenterX = Math.ceil(this.containerWidth / 2); // Вычисляем X центра контейнера
+      this.containerCenterY = Math.ceil(this.containerHeight / 2); // Вычисляем Y центра контейнера
     },
-    // Функция для обновления координат центра холста
-    updateCanvasCenter() {
-      const { centerX, centerY } = this.calculateCanvasCenter();
-      this.centerX = centerX;
-      this.centerY = centerY;
-    },
-    // Функция для расчета координат центра холста
-    calculateCanvasCenter() {
-      const centerX = this.canvasX + this.canvasWidth / 2;
-      const centerY = this.canvasY + this.canvasHeight / 2;
-      return { centerX, centerY };
-    },
-    // Функция для центрирования холста
-    resetCanvas() {
-      if (this.panzoomInstance) {
-        // Сбрасываем масштаб и позицию холста
-        this.panzoomInstance.reset();
-        // Обновляем координаты
-        this.canvasX = 0;
-        this.canvasY = 0;
-        this.updateCanvasCenter(); // Обновляем координаты центра
-      }
-    },
+
+    // Вычисление центра холста (без учета смещения)
     centerCanvas() {
-      this.staticCenterX = Math.ceil(this.canvasWidth / 2);
-      this.staticСenterY = Math.ceil(this.canvasHeight / 2);
+      this.staticCenterX = Math.ceil(this.canvasWidth / 2); // Вычисляем X центра холста
+      this.staticСenterY = Math.ceil(this.canvasHeight / 2); // Вычисляем Y центра холста
     },
+
+    // Центрирование холста на указанных координатах
     centerCanvasOnCoordinates(targetX, targetY) {
       if (this.panzoomInstance) {
-        const containerCenterX = this.containerCenterX;
-        const containerCenterY = this.containerCenterY;
+        const containerCenterX = this.containerCenterX; // Получаем X центра контейнера
+        const containerCenterY = this.containerCenterY; // Получаем Y центра контейнера
 
+        // Вычисляем смещение для центрирования холста на целевых координатах
         const offsetX = containerCenterX - targetX;
         const offsetY = containerCenterY - targetY;
 
-        //this.panzoomInstance.pan(offsetX, offsetY, { animate: true });
+        // Применяем смещение с анимацией
         this.panzoomInstance.pan(offsetX, offsetY, {
           animate: true,
           duration: 500, // Длительность анимации в миллисекундах
           easing: 'ease-in-out', // Тип анимации
         });
 
+        // Обновляем текущие координаты холста
         this.canvasX = offsetX;
         this.canvasY = offsetY;
-        this.updateCanvasCenter();
       }
-    }
+    },
+
+    // Центрирование холста при загрузке компонента
+    centerCanvasOnLoad() {
+      if (this.panzoomInstance) {
+        // Вычисляем смещение для центрирования холста относительно контейнера
+        const offsetX = this.containerCenterX - this.staticCenterX;
+        const offsetY = this.containerCenterY - this.staticСenterY;
+
+        // Применяем смещение с анимацией
+        this.panzoomInstance.pan(offsetX, offsetY, { animate: true });
+
+        // Обновляем текущие координаты холста
+        this.canvasX = offsetX;
+        this.canvasY = offsetY;
+      }
+    },
   },
   mounted() {
-    this.initPanzoom(); // Инициализация Panzoom при монтировании компонента
+    // Инициализация Panzoom при монтировании компонента
+    this.initPanzoom();
 
-    // Отслеживаем изменения размеров холста
+    // Создаем наблюдатель за изменениями размеров холста
     const canvasResizeObserver = new ResizeObserver(() => {
-      this.updateCanvasSize();
+      this.updateCanvasSize(); // Обновляем размеры холста при изменении
     });
+    canvasResizeObserver.observe(this.$refs.canvas); // Начинаем наблюдение за холстом
 
-    canvasResizeObserver.observe(this.$refs.canvas);
-
-    // Отслеживаем изменения размеров контейнера
+    // Создаем наблюдатель за изменениями размеров контейнера
     const containerResizeObserver = new ResizeObserver(() => {
-      this.updateContainerSize();
+      this.updateContainerSize(); // Обновляем размеры контейнера при изменении
     });
-
-    containerResizeObserver.observe(this.$refs.canvasContainer);
+    containerResizeObserver.observe(this.$refs.canvasContainer); // Начинаем наблюдение за контейнером
 
     // Инициализация начальных размеров
-    this.updateCanvasSize();
-    this.updateContainerSize();
-    this.centerCanvas();
+    this.updateCanvasSize(); // Обновляем размеры холста
+    this.updateContainerSize(); // Обновляем размеры контейнера
+    this.centerCanvas(); // Вычисляем центр холста
+
+    // Используем nextTick для ожидания обновления DOM
+    nextTick(() => {
+      // Ждем завершения ResizeObserver и других асинхронных операций
+      setTimeout(() => {
+        this.updateCanvasSize(); // Обновляем размеры холста
+        this.updateContainerSize(); // Обновляем размеры контейнера
+        this.centerCanvas(); // Вычисляем центр холста
+
+        // Если Panzoom инициализирован, центрируем холст и делаем его видимым
+        if (this.panzoomInstance) {
+          this.centerCanvasOnLoad(); // Центрируем холст
+          document.getElementById('windowcontainer').style.opacity = '1'; // Делаем контейнер видимым
+        }
+      }, 100); // Таймаут для завершения отрисовки
+    });
   },
 };
 </script>

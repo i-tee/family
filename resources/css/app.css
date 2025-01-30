@@ -64,6 +64,10 @@ footer {
     /* Выравнивание текста по центру */
 }
 
+#windowcontainer {
+    transition: opacity 1s ease-in-out; /* Плавное изменение opacity за 1 секунду */
+}
+
 .canvas-info p {
     margin-right: 10px;
 }
@@ -110,7 +114,7 @@ div.menu {
     background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
 }
 
-.block {
+.personBlock {
     position: absolute;
     border: 1px solid #000;
     background-color: white;

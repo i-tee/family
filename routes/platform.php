@@ -120,3 +120,7 @@ Route::screen('tree/{tree?}', TreeEditScreen::class)
 
 Route::screen('trees', TreeListScreen::class)
     ->name('platform.tree.list');
+
+use App\Orchid\Screens\CanvasSettingScreen;
+
+Route::screen('canvas-settings', CanvasSettingScreen::class)->name('platform.canvas-settings');

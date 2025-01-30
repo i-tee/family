@@ -86,7 +86,10 @@ class PlatformProvider extends OrchidServiceProvider
 
             Menu::make(__('Trees'))
                 ->icon('bs.tree')
-                ->route('platform.tree.list')
+                ->route('platform.tree.list'),
+            Menu::make(__('Canvas'))
+                ->icon('bs.table')
+                ->route('platform.canvas-settings')
                 
             /*
             Menu::make('Documentation')
