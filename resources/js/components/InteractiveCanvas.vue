@@ -25,9 +25,11 @@
     <input type="number" v-model.number="targetY" placeholder="Y">
     <button @click="centerCanvasOnCoordinates(targetX, targetY)">Go</button>
   </div>
+
 </template>
 
 <script>
+
 import Panzoom from '@panzoom/panzoom'; // Импортируем библиотеку Panzoom для управления масштабированием и панорамированием
 import Menu from './dashboard/Menu.vue'; // Импортируем дочерний компонент Menu
 import { nextTick } from 'vue'; // Импортируем nextTick из Vue для работы с асинхронными обновлениями DOM

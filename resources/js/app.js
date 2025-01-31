@@ -2,7 +2,9 @@
 // window.Alpine = Alpine;
 // Alpine.start();
 
-import './bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
+import * as bootstrap from 'bootstrap';
+window.bootstrap = bootstrap; // Делаем доступным глобально
 
 import axios from 'axios';
 axios.defaults.headers.common['X-Requested-With'] = 'XMLHttpRequest';
@@ -16,6 +18,7 @@ import { createApp } from 'vue';
 import Person from './components/Person.vue';
 import Tree from './components/Tree.vue';
 import InteractiveCanvas from './components/InteractiveCanvas.vue';
+import Modal from './components/Modal.vue';
 
 // Функция для безопасного монтирования приложения
 function mountApp(component, selector) {
@@ -25,7 +28,20 @@ function mountApp(component, selector) {
     }
 }
 
+function mountAppWithData(component, selector) {
+    const elements = document.querySelectorAll(selector); // Находим все элементы с этим классом
+
+    elements.forEach(mountElement => {
+        const props = Object.fromEntries(
+            Object.entries(mountElement.dataset).map(([key, value]) => [key, value])
+        );
+
+        createApp(component, props).mount(mountElement);
+    });
+}
+
 // Монтируем приложения только если их целевые элементы существуют
 mountApp(Person, '#appPerson');
 mountApp(Tree, '#appTree');
+mountAppWithData(Modal, '.appModal');
 mountApp(InteractiveCanvas, '#InteractiveCanvas');
