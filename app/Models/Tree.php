@@ -8,7 +8,6 @@ use Orchid\Screen\AsSource;
 
 class Tree extends Model
 {
-
     use AsSource;
     use HasFactory;
 
@@ -17,6 +16,7 @@ class Tree extends Model
     protected $fillable = [
         'name',
         'user_id',
+        'cp_id', // Добавляем новое поле
     ];
 
     public function user()
@@ -28,5 +28,25 @@ class Tree extends Model
     {
         return $this->hasMany(Person::class);
     }
+
+    // Связь с центральной персоной
+    public function centerPerson()
+    {
+        return $this->belongsTo(Person::class, 'cp_id');
+    }
+
+    public function setCenterPerson($personId)
+    {
+        // Проверяем, существует ли персона с таким ID
+        if (!Person::where('id', $personId)->exists()) {
+            throw new \Exception("Персона с ID {$personId} не найдена.");
+        }
     
+        // Обновляем cp_id
+        $this->cp_id = $personId;
+        $this->save();
+    
+        return $this;
+    }
+
 }

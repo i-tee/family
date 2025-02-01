@@ -18,6 +18,7 @@ class PersonController extends Controller
     // Создать новую персону
     public function store(Request $request)
     {
+        // Валидация входных данных
         $validatedData = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
@@ -27,7 +28,13 @@ class PersonController extends Controller
             'tree_id' => 'required|exists:trees,id',
         ]);
 
+        // Создаём персону
         $person = Person::create($validatedData);
+
+        // Пытаемся установить новую персону как центральную для дерева
+        $person->setAsCenterPerson($validatedData['tree_id']);
+
+        // Возвращаем созданную персону
         return response()->json($person, 201);
     }
 

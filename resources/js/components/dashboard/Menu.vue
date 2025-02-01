@@ -2,7 +2,7 @@
     <div class="d-flex align-items-center bg-light border-bottom p-2">
       <!-- Информация о дереве -->
       <div class="me-3">
-        <span class="fw-bold">[id:{{ tree.id }}] {{ tree.name }}</span>
+        <span class="fw-bold">[id:{{ tree_id }}]</span>
       </div>
   
       <!-- Кнопки/инструменты -->
@@ -30,8 +30,9 @@
   </template>
 
 <script>
+
 import { toRaw } from 'vue';
-import Modal from '../Modal.vue'; // Импортируем дочерний компонент Menu
+import Modal from '../Modal.vue'; // Импортируем дочерний компонент Modal
 
 export default {
     components: {
@@ -39,7 +40,7 @@ export default {
     },
     methods: {
         childMethod() {
-            console.log(toRaw(this.tree.id));
+            //console.log(toRaw(this.tree_id));
         },
         checkPersons() {
             if (Array.isArray(this.persons) && this.persons.length > 0) {
@@ -48,7 +49,7 @@ export default {
             return true;
         },
         fetchPersons() {
-            axios.get('/api/persons/tree/'+this.tree.id)
+            axios.get('/api/persons/tree/'+this.tree_id)
                 .then(response => {
                     this.persons = response.data;
                     console.log(toRaw(this.persons));
@@ -63,7 +64,7 @@ export default {
     },
     data() {
         return {
-            tree: window.tree
+          tree_id: window.tree_id
         };
     },
     mounted() {

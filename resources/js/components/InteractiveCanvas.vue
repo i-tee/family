@@ -18,12 +18,15 @@
     <div class="canvas-info">
       <span>Холст: ({{ canvasX }}, {{ canvasY }})</span>
       <span>Центр контейнера: ({{ containerCenterX }}, {{ containerCenterY }})</span>
-      <span>Центр холста: ({{ staticCenterX }}, {{ staticСenterY }})</span>
+      <span>Центр холста: ({{ staticCenterX }}, {{ staticCenterY }})</span>
     </div>
     <!-- Поле для ввода координат и кнопка для центрирования -->
     <input type="number" v-model.number="targetX" placeholder="X">
     <input type="number" v-model.number="targetY" placeholder="Y">
     <button @click="centerCanvasOnCoordinates(targetX, targetY)">Go</button>
+    <button @click="fetchTree()">fetchTree</button>
+    <button @click="checkCP()">checkCP</button>
+    <button @click="fetchPersons()">fetchPersons</button>
   </div>
 
 </template>
@@ -37,7 +40,7 @@ import { toRaw } from 'vue';
 
 export default {
   components: {
-    Menu, // Регистрируем дочерний компонент Menu
+    Menu // Регистрируем дочерний компонент Menu
   },
   name: 'InteractiveCanvas', // Имя компонента
   data() {
@@ -46,14 +49,15 @@ export default {
       blocks: [
         { id: 1, text: 'Центр Тута!', top: 2400, left: 2000 },
       ],
-      tree: window.tree,
+      tree: [],
       persons: [],
+      personCenter: false,
       canvasWidth: 0, // Ширина холста
       canvasHeight: 0, // Высота холста
       canvasX: 0, // Текущая позиция холста по оси X
       canvasY: 0, // Текущая позиция холста по оси Y
       staticCenterX: 0, // Координата X центра холста (без учета смещения)
-      staticСenterY: 0, // Координата Y центра холста (без учета смещения)
+      staticCenterY: 0, // Координата Y центра холста (без учета смещения)
       panzoomInstance: null, // Экземпляр Panzoom для управления холстом
       targetX: 2331, // Целевая координата X для центрирования
       targetY: 2475, // Целевая координата Y для центрирования
@@ -78,6 +82,58 @@ export default {
         this.canvasX = x; // Обновляем позицию холста по X
         this.canvasY = y; // Обновляем позицию холста по Y
       });
+    },
+
+    openCreatPersonModal() {
+
+    },
+
+    async fetchPersons(id) {
+      if (id) {
+        try {
+          const response = await axios.get('/api/persons/' + id);
+          console.log(response.data);
+          return response.data; // Возвращаем данные
+        } catch (error) {
+          console.error('Ошибка при загрузке персон:', error);
+          return null; // Возвращаем null в случае ошибки
+        }
+      } else {
+        try {
+          const response = await axios.get('/api/persons/tree/' + window.tree_id);
+          this.persons = response.data;
+          console.log(toRaw(this.persons));
+        } catch (error) {
+          console.error('Ошибка при загрузке персон:', error);
+        }
+      }
+    },
+
+    async checkCP() {
+      if (this.tree.cp_id) {
+        try {
+          this.personCenter = await this.fetchPersons(this.tree.cp_id);
+          return true;
+        } catch (error) {
+          console.error('Ошибка при загрузке центральной персоны:', error);
+          return false;
+        }
+      } else {
+        return false;
+      }
+    },
+
+    //Получаем детали дерева
+    async fetchTree() {
+      try {
+        const response = await axios.get('/api/trees/' + window.tree_id);
+        this.tree = response.data;
+
+        console.log(toRaw(this.tree));
+
+      } catch (error) {
+        console.error('Ошибка загрузки деревьев', error);
+      }
     },
 
     // Обработчик выбора блока на холсте
@@ -110,7 +166,7 @@ export default {
     // Вычисление центра холста (без учета смещения)
     centerCanvas() {
       this.staticCenterX = Math.ceil(this.canvasWidth / 2); // Вычисляем X центра холста
-      this.staticСenterY = Math.ceil(this.canvasHeight / 2); // Вычисляем Y центра холста
+      this.staticCenterY = Math.ceil(this.canvasHeight / 2); // Вычисляем Y центра холста
     },
 
     // Центрирование холста на указанных координатах
@@ -141,7 +197,7 @@ export default {
       if (this.panzoomInstance) {
         // Вычисляем смещение для центрирования холста относительно контейнера
         const offsetX = this.containerCenterX - this.staticCenterX;
-        const offsetY = this.containerCenterY - this.staticСenterY;
+        const offsetY = this.containerCenterY - this.staticCenterY;
 
         // Применяем смещение с анимацией
         this.panzoomInstance.pan(offsetX, offsetY, { animate: true });
@@ -155,7 +211,6 @@ export default {
   mounted() {
     // Инициализация Panzoom при монтировании компонента
     this.initPanzoom();
-    //this.fetchPersons();
 
     // Создаем наблюдатель за изменениями размеров холста
     const canvasResizeObserver = new ResizeObserver(() => {
@@ -189,6 +244,15 @@ export default {
         }
       }, 100); // Таймаут для завершения отрисовки
     });
+
+    this.fetchTree().then(async () => {
+      if (await this.checkCP()) {
+        console.log('Центральная персона:', toRaw(this.personCenter));
+      } else {
+        console.log('Центральная персона не установлена.');
+      }
+    });
+
   },
 };
 </script>

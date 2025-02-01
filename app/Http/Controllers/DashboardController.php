@@ -34,8 +34,9 @@ class DashboardController extends Controller
 
         // Передаем данные в Blade-шаблон
         return view('cabinet.showtree', [
-            'tree' => $tree,
-            'persons' => $this->getPersonsTree($id)
+            //'tree' => $tree,
+            'tree_id' => $tree->id,
+            //'persons' => $this->getPersonsTree($id)
         ]);
 
     }

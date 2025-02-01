@@ -105,8 +105,7 @@
         try {
           // Отправка данных на сервер
           await axios.post("/api/persons", this.form);
-          alert("Персона успешно создана!");
-          this.resetForm(); // Сброс формы после успешного создания
+          location.reload();
         } catch (error) {
           console.error("Ошибка при создании персоны:", error);
           alert("Произошла ошибка при создании персоны.");
