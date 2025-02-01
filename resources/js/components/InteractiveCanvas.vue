@@ -8,8 +8,18 @@
       <div v-for="(block, index) in blocks" :key="index" class="personBlock" :data-id="block.id" :style="{
         top: block.top + 'px',
         left: block.left + 'px',
+        width: block.width + 'px',
+        height: block.height + 'px',
       }" @click="selectBlock(block)">
-        {{ block.text }}
+        <div class="body-block">
+          <h3>{{ block.last_name }} {{ block.first_name }} {{ block.middle_name }}</h3>
+          <p>{{ block.birth_date }}</p>
+          <div v-if="block.alert" style="max-width: 300px;">
+            <h3>Начало</h3>
+            <p>Для начала работы с семейным деревом, нужно создать первого человека</p>
+            <button type="button" onclick="document.querySelector('.js-CreatPerson')?.click();" class="btn btn-primary btn-sm">Создать</button>
+          </div>
+        </div>
       </div>
     </div>
   </div>
@@ -46,9 +56,8 @@ export default {
   data() {
     return {
       // Массив блоков, которые отображаются на холсте
-      blocks: [
-        { id: 1, text: 'Центр Тута!', top: 2400, left: 2000 },
-      ],
+      blocks: [],
+      canvasSetting: window.canvasSetting,
       tree: [],
       persons: [],
       personCenter: false,
@@ -84,15 +93,18 @@ export default {
       });
     },
 
-    openCreatPersonModal() {
-
+    CreatFirstPersonBlock() {
+      this.blocks.push({
+          "top": this.staticCenterX,
+          "left": this.staticCenterY,
+          "alert": 'Надо создавть'
+      });
     },
 
     async fetchPersons(id) {
       if (id) {
         try {
           const response = await axios.get('/api/persons/' + id);
-          console.log(response.data);
           return response.data; // Возвращаем данные
         } catch (error) {
           console.error('Ошибка при загрузке персон:', error);
@@ -113,6 +125,10 @@ export default {
       if (this.tree.cp_id) {
         try {
           this.personCenter = await this.fetchPersons(this.tree.cp_id);
+          this.personCenter.top = this.staticCenterX;
+          this.personCenter.left = this.staticCenterY;
+          this.personCenter.width = this.canvasSetting.width;
+          this.personCenter.height = this.canvasSetting.height;
           return true;
         } catch (error) {
           console.error('Ошибка при загрузке центральной персоны:', error);
@@ -247,11 +263,16 @@ export default {
 
     this.fetchTree().then(async () => {
       if (await this.checkCP()) {
-        console.log('Центральная персона:', toRaw(this.personCenter));
+        console.log(toRaw(this.personCenter));
+        this.blocks.push(this.personCenter);
+        console.log(toRaw(this.blocks));
       } else {
+        this.CreatFirstPersonBlock();
         console.log('Центральная персона не установлена.');
       }
     });
+
+    console.log(toRaw(this.canvasSetting));
 
   },
 };

@@ -11,7 +11,7 @@
         <div>
           <Modal
             :title="'Создать'"
-            :button-class="'btn btn-primary btn-sm'"
+            :button-class="'btn btn-primary btn-sm js-CreatPerson'"
             :descr="'Создайте нового члена семьи'"
             :button-text="'Добавить человека'"
             :button-confirm="'Сохранить'"

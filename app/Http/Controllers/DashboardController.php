@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Tree; // Подключите модель Tree
+use App\Models\CanvasSetting; // Подключите модель Tree
 
 class DashboardController extends Controller
 {
@@ -27,6 +28,8 @@ class DashboardController extends Controller
         // Находим запись по ID
         $tree = Tree::find($id);
 
+        $canvasSetting = CanvasSetting::instance();
+
         // Если запись не найдена, возвращаем 404
         if (!$tree) {
             abort(404);
@@ -35,6 +38,7 @@ class DashboardController extends Controller
         // Передаем данные в Blade-шаблон
         return view('cabinet.showtree', [
             //'tree' => $tree,
+            'canvasSetting' => $canvasSetting,
             'tree_id' => $tree->id,
             //'persons' => $this->getPersonsTree($id)
         ]);
