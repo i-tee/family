@@ -33,6 +33,7 @@
 import Panzoom from '@panzoom/panzoom'; // Импортируем библиотеку Panzoom для управления масштабированием и панорамированием
 import Menu from './dashboard/Menu.vue'; // Импортируем дочерний компонент Menu
 import { nextTick } from 'vue'; // Импортируем nextTick из Vue для работы с асинхронными обновлениями DOM
+import { toRaw } from 'vue';
 
 export default {
   components: {
@@ -46,7 +47,7 @@ export default {
         { id: 1, text: 'Центр Тута!', top: 2400, left: 2000 },
       ],
       tree: window.tree,
-      persons: window.persons,
+      persons: [],
       canvasWidth: 0, // Ширина холста
       canvasHeight: 0, // Высота холста
       canvasX: 0, // Текущая позиция холста по оси X
@@ -154,6 +155,7 @@ export default {
   mounted() {
     // Инициализация Panzoom при монтировании компонента
     this.initPanzoom();
+    //this.fetchPersons();
 
     // Создаем наблюдатель за изменениями размеров холста
     const canvasResizeObserver = new ResizeObserver(() => {

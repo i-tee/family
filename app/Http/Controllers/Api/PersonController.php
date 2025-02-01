@@ -56,6 +56,16 @@ class PersonController extends Controller
         return response()->json($person);
     }
 
+    // Получить список персон по tree_id
+    public function byTree($tree_id)
+    {
+        // Ищем всех персон с указанным tree_id
+        $persons = Person::where('tree_id', $tree_id)->get();
+
+        // Возвращаем результат в формате JSON
+        return response()->json($persons);
+    }
+
     // Удалить персону
     public function destroy($id)
     {

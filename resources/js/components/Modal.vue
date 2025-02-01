@@ -1,8 +1,7 @@
-<!-- resources/js/components/Modal.vue -->
 <template>
     <!-- Кнопка для открытия модального окна -->
-    <button type="button" class="btn btn-primary" @click="openModal">
-        {{ button }}
+    <button type="button" :class="buttonClass" @click="openModal">
+        {{ buttonText }}
     </button>
 
     <!-- Модальное окно -->
@@ -13,12 +12,15 @@
                     <h5 class="modal-title">{{ title }}</h5>
                     <button type="button" class="btn-close" @click="closeModal"></button>
                 </div>
+
+                <!-- Динамически загружаемый компонент -->
                 <div class="modal-body">
-                    <p>{{ descr }}</p>
+                    <component :is="dynamicComponent" />
                 </div>
+
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" @click="closeModal">Закрыть</button>
-                    <button type="button" class="btn btn-primary">Сохранить</button>
+                    <button v-if="isButtonConfirm" type="button" class="btn btn-primary">{{ buttonConfirm }}</button>
                 </div>
             </div>
         </div>
@@ -30,42 +32,46 @@
 </template>
 
 <script>
+import { defineAsyncComponent } from 'vue';
+
 export default {
     props: {
         title: String,
         descr: String,
-        button: String
+        buttonText: String,
+        buttonClass: String,
+        buttonConfirm: String,
+        componentName: String // Передаем имя компонента
     },
     data() {
         return {
-            isOpen: false, // Состояние модального окна
+            isOpen: false // Состояние модального окна
         };
+    },
+    computed: {
+        dynamicComponent() {
+            if (!this.componentName) return null; // Если не передали компонент, ничего не рендерим
+
+            return defineAsyncComponent(() => import(`./tools/${this.componentName}.vue`));
+        },
+        isButtonConfirm() {
+            // Проверяем, что buttonConfirm не равно "false", не пустое, не null и не 0 (включая строку '0')
+            return this.buttonConfirm !== false &&
+                this.buttonConfirm !== "" &&
+                this.buttonConfirm !== null &&
+                this.buttonConfirm !== undefined &&
+                this.buttonConfirm !== 0 &&
+                this.buttonConfirm !== '0' &&
+                this.buttonConfirm !== "false";
+        }
     },
     methods: {
         openModal() {
-            this.isOpen = true; // Открыть модальное окно
+            this.isOpen = true;
         },
         closeModal() {
-            this.isOpen = false; // Закрыть модальное окно
-        },
-    },
-    mounted(){
-        
+            this.isOpen = false;
+        }
     }
 };
 </script>
-
-<style scoped>
-/* Стили для модального окна */
-.modal {
-    background: rgba(0, 0, 0, 0.5);
-}
-
-.modal.show {
-    display: block;
-}
-
-.modal-backdrop.show {
-    display: block;
-}
-</style>
