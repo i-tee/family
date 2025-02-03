@@ -17,6 +17,7 @@ return Application::configure(basePath: dirname(__DIR__))
         health: '/up',
     )
     ->withMiddleware(function (Middleware $middleware) {
+
         // Настройка middleware для API
         $middleware->api([
             HandleCors::class, // Middleware для обработки CORS
@@ -24,6 +25,18 @@ return Application::configure(basePath: dirname(__DIR__))
             \Illuminate\Routing\Middleware\ThrottleRequests::class . ':api',
             \Illuminate\Routing\Middleware\SubstituteBindings::class,
         ]);
+
+        // Добавляем новое middleware в группу web
+        $middleware->web([
+            \App\Http\Middleware\SelectUserTreeMiddleware::class,
+            \App\Http\Middleware\MainTreeLinkMiddleware::class, // Ваш middleware
+        ]);
+
+        // Регистрация нового middleware с именем 'select.tree'
+        $middleware->alias([
+            //'select.tree' => \App\Http\Middleware\SelectUserTreeMiddleware::class,
+        ]);        
+
     })
     ->withExceptions(function (Exceptions $exceptions) {
         //

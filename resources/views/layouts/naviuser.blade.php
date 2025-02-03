@@ -1,10 +1,21 @@
 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
 
-    <li class="nav-item">
-        <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
-    </li>
+    @isset($mainTreeData)
+        <!-- Переменная $mainTreeData существует -->
+        <li class="nav-item">
+            <a class="nav-link" href="{{ $mainTreeData['mainTreeLink'] }}">{{ $mainTreeData['mainTreeName'] }}</a>
+        </li>
+        <li class="nav-item">
+            <a title="{{ __('Dashboard') }}" class="nav-link" href="{{ route('dashboard') }}"><i class="bi bi-gear-fill"></i></a>
+        </li>
+    @else
+        <li class="nav-item">
+            <a class="nav-link" href="{{ route('dashboard') }}">{{ __('Dashboard') }}</a>
+        </li>
+    @endisset
 
 </ul>
+
 <div class="row align-items-center">
     <div class="col">
         <span>{{ Auth::user()->name }}</span>

@@ -16,7 +16,9 @@ class Tree extends Model
     protected $fillable = [
         'name',
         'user_id',
-        'cp_id', // Добавляем новое поле
+        'cp_id',
+        'selected', // Добавляем новое поле
+        'archived', // Добавляем новое поле
     ];
 
     public function user()

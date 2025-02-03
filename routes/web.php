@@ -19,7 +19,8 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
         Route::get('/', [DashboardController::class, 'chooseTree'])->name('dashboard.tree.choose');
         Route::get('/{id}', [DashboardController::class, 'showTree'])->name('dashboard.tree.show');
-
+        // Route::get('/{id}', [DashboardController::class, 'showTree'])
+        //     ->middleware('select.tree') // Используется именно 'select.tree'
+        //     ->name('dashboard.tree.show');
     });
-
 });

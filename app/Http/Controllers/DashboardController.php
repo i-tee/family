@@ -24,25 +24,25 @@ class DashboardController extends Controller
 
     public function showTree($id)
     {
-
-        // Находим запись по ID
-        $tree = Tree::find($id);
-
-        $canvasSetting = CanvasSetting::instance();
-
-        // Если запись не найдена, возвращаем 404
-        if (!$tree) {
-            abort(404);
+        // Получаем ID текущего авторизованного пользователя
+        $userId = auth()->id();
+    
+        // Находим текущее дерево по ID
+        $tree = Tree::findOrFail($id);
+    
+        // Если дерево не принадлежит пользователю, возвращаем 403
+        if ($tree->user_id !== $userId) {
+            abort(403, 'Вы не имеете доступа к этому дереву.');
         }
-
+    
+        $canvasSetting = CanvasSetting::instance();
+    
         // Передаем данные в Blade-шаблон
         return view('cabinet.showtree', [
-            //'tree' => $tree,
             'canvasSetting' => $canvasSetting,
             'tree_id' => $tree->id,
-            //'persons' => $this->getPersonsTree($id)
+            'userId' => $userId,
         ]);
-
     }
 
     public function getPersonsTree($id){
