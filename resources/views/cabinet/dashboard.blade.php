@@ -1,6 +1,6 @@
 <x-app-layout>
 
-    <div class="p-3">
+    <div class="p-3 container">
 
         <h1>{{ __('Dashboard') }}</h1>
 

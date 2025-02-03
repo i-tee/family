@@ -4,6 +4,17 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Api\PersonController;
 use App\Http\Controllers\Api\TreeController;
 use App\Http\Controllers\AuthController;
+use Illuminate\Support\Facades\File;    
+
+Route::get('/localization/{locale}', function ($locale) {
+    $file = base_path("lang/{$locale}.json"); // Было resource_path(), стало base_path()
+
+    if (!File::exists($file)) {
+        return Response::json(['error' => 'Translation file not found'], 404);
+    }
+
+    return Response::json(json_decode(File::get($file), true));
+});
 
 Route::get('test', function () {
     return response()->json(['message' => 'Hello, API! Fuck! Luck']);

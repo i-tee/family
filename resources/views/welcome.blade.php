@@ -1,6 +1,6 @@
 <x-app-layout>
-    <div class="p-3">
-        <h1>{{ config('app.name') }}</h1>
-        <h2>{{ __('Welcome') }}</h2>
+    <div class="p-3 container">
+        <h1>{{ __('AppName') }}</h1>
+        <h2>{{ __('AppDescription') }}</h2>
     </div>
 </x-app-layout>

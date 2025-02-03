@@ -1,12 +1,10 @@
 <x-app-layout>
-    <div class="p-3">
+    <div class="p-3 container">
 
-        <h1>Надо выбрать дерево для отображения</h1>
+        <h1>{{ __('Choose tree') }}</h1>
 
         <!-- Передаем данные в компонент через атрибут -->
-        <div class="appModal" data-title="Ваши деревья" data-descr="Выдерите одно из деревьев для отображения и работы с ним"
-            data-button-text="Список" data-component-name="TreeListChoose" data-button-confirm="">
-        </div>
+        <div class="appTreeListChoose">appTreeListChoose</div>
 
     </div>
 </x-app-layout>

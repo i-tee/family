@@ -1,17 +1,8 @@
 <template>
   <div class="container mt-4">
-    <h1>Деревья</h1>
     <table class="table table-hover">
-      <thead>
-        <tr>
-          <th scope="col">ID</th>
-          <th scope="col">Название</th>
-          <th scope="col">Действия</th>
-        </tr>
-      </thead>
       <tbody>
         <tr v-for="tree in trees" :key="tree.id">
-          <td>{{ tree.id }}</td>
           <td>{{ tree.name }}</td>
           <td>
             <a :href="`/dashboard/tree/${tree.id}`" class="btn btn-primary btn-sm">
