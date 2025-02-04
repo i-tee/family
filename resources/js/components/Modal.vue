@@ -12,7 +12,7 @@
                     <h5 class="modal-title">{{ title }}</h5>
                     <button type="button" class="btn-close" @click="closeModal"></button>
                 </div>
-
+                <div class="p-3">{{ descr }}</div>
                 <!-- Динамически загружаемый компонент -->
                 <div class="modal-body">
                     <component :is="dynamicComponent" />

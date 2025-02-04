@@ -1,14 +1,14 @@
 <template>
     <div class="container mt-4">
         <div class="list-group">
-            <a 
-                v-for="tree in trees" 
-                :key="tree.id" 
-                :href="`/dashboard/tree/${tree.id}`" 
-                class="list-group-item list-group-item-action"
-            >
+            <a v-for="tree in trees" :key="tree.id" :href="`/dashboard/tree/${tree.id}`"
+                class="list-group-item list-group-item-action">
                 {{ tree.name }}
             </a>
+            <div v-if="nocountTrees()">
+                <p>Нет ни одного дерева для работы, создайте семейное дерево</p>
+                <p><a href="/dashboard">Панель упарвления</a></p>
+            </div>
         </div>
     </div>
 </template>
@@ -42,7 +42,18 @@ export default {
                 console.error('Ошибка загрузки деревьев', error);
             }
         },
+        async nocountTrees() {
+
+            if(this.trees.length){
+                return true;
+            }
+
+
+        }
     },
+    mounted() {
+        this.nocountTrees();
+    }
 };
 </script>
 
@@ -53,6 +64,7 @@ export default {
 }
 
 .list-group-item:hover {
-    background-color: #f8f9fa; /* Цвет фона при наведении */
+    background-color: #f8f9fa;
+    /* Цвет фона при наведении */
 }
 </style>

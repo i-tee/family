@@ -17,7 +17,8 @@
           <div v-if="block.alert" style="max-width: 300px;">
             <h3>Начало</h3>
             <p>Для начала работы с семейным деревом, нужно создать первого человека</p>
-            <button type="button" onclick="document.querySelector('.js-CreatPerson')?.click();" class="btn btn-primary btn-sm">Создать</button>
+            <button type="button" onclick="document.querySelector('.js-CreatPerson')?.click();"
+              class="btn btn-primary btn-sm">Создать</button>
           </div>
         </div>
       </div>
@@ -95,9 +96,9 @@ export default {
 
     CreatFirstPersonBlock() {
       this.blocks.push({
-          "top": this.staticCenterX,
-          "left": this.staticCenterY,
-          "alert": 'Надо создавть'
+        "top": this.staticCenterX,
+        "left": this.staticCenterY,
+        "alert": 'Надо создавть'
       });
     },
 
@@ -114,7 +115,7 @@ export default {
         try {
           const response = await axios.get('/api/persons/tree/' + window.tree_id);
           this.persons = response.data;
-          console.log(toRaw(this.persons));
+          //console.log(toRaw(this.persons));
         } catch (error) {
           console.error('Ошибка при загрузке персон:', error);
         }
@@ -145,7 +146,7 @@ export default {
         const response = await axios.get('/api/trees/' + window.tree_id);
         this.tree = response.data;
 
-        console.log(toRaw(this.tree));
+        //console.log(toRaw(this.tree));
 
       } catch (error) {
         console.error('Ошибка загрузки деревьев', error);
@@ -263,16 +264,16 @@ export default {
 
     this.fetchTree().then(async () => {
       if (await this.checkCP()) {
-        console.log(toRaw(this.personCenter));
+        //console.log(toRaw(this.personCenter));
         this.blocks.push(this.personCenter);
-        console.log(toRaw(this.blocks));
+        //console.log(toRaw(this.blocks));
       } else {
         this.CreatFirstPersonBlock();
-        console.log('Центральная персона не установлена.');
+        //console.log('Центральная персона не установлена.');
       }
     });
 
-    console.log(toRaw(this.canvasSetting));
+    //console.log(toRaw(this.canvasSetting));
 
   },
 };
