@@ -26,7 +26,7 @@ class MainTreeLinkMiddleware
             if ($tree) {
                 // Если дерево найдено, формируем данные
                 $data = [
-                    'mainTreeLink' => route('dashboard.tree.show', ['id' => $tree->id]),
+                    'mainTreeLink' => route('dashboard.tree.show', ['tree_id' => $tree->id]),
                     'mainTreeName' => $tree->name,
                     'mainTreeId'   => $tree->id,
                 ];

@@ -18,7 +18,29 @@ class Person extends Model
         'birth_date',
         'death_date',
         'tree_id',
+        'mother_id',
+        'father_id',
     ];
+
+    /**
+     * Связь с матерью.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function mother()
+    {
+        return $this->belongsTo(Person::class, 'mother_id');
+    }
+
+    /**
+     * Связь с отцом.
+     *
+     * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
+     */
+    public function father()
+    {
+        return $this->belongsTo(Person::class, 'father_id');
+    }
 
     /**
      * Связь с деревом.

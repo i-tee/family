@@ -1,7 +1,8 @@
 <template>
     <h3>{{ block.last_name }} {{ block.first_name }} {{ block.middle_name }}</h3>
     <p>{{ block.birth_date }}</p>
-    <code>{{ block }}</code>
+    <a :href="`/dashboard/tree/person/${block.id}`">Редактировать</a>
+    <code>{{ JSON.stringify(block, null, 2) }}</code>
 </template>
 
 <script>

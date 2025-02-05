@@ -35,7 +35,8 @@ return Application::configure(basePath: dirname(__DIR__))
         // Регистрация нового middleware с именем 'select.tree'
         $middleware->alias([
             //'select.tree' => \App\Http\Middleware\SelectUserTreeMiddleware::class,
-        ]);        
+            //'choose.tree' => \App\Http\Middleware\MainTreeLinkMiddleware::class,
+        ]); 
 
     })
     ->withExceptions(function (Exceptions $exceptions) {

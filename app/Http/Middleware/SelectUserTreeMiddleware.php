@@ -14,7 +14,7 @@ class SelectUserTreeMiddleware
         // Получаем ID текущего авторизованного пользователя
         $userId = auth()->id();
 
-        if ($userId && $request->route('id')) { // Проверяем, есть ли ID дерева в запросе
+        if ($userId && $request->route('tree_id')) { // Проверяем, есть ли ID дерева в запросе
             // Находим все деревья пользователя
             $userTrees = Tree::where('user_id', $userId)->get();
 
@@ -25,7 +25,7 @@ class SelectUserTreeMiddleware
             });
 
             // Находим текущее дерево по ID
-            $tree = Tree::find($request->route('id'));
+            $tree = Tree::find($request->route('tree_id'));
 
             if ($tree && $tree->user_id === $userId) { // Проверяем, принадлежит ли дерево пользователю
                 // Устанавливаем selected = true для текущего дерева
