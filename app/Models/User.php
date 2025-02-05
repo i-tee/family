@@ -7,11 +7,13 @@ use Orchid\Filters\Types\Where;
 use Orchid\Filters\Types\WhereDateStartEnd;
 use Orchid\Platform\Models\User as Authenticatable;
 use Laravel\Sanctum\HasApiTokens;
+use Illuminate\Contracts\Auth\MustVerifyEmail;
 
-class User extends Authenticatable
+class User extends Authenticatable implements MustVerifyEmail
 {
 
     use HasApiTokens; // Добавь этот трейт
+    //use HasFactory, Notifiable;
 
     /**
      * Проверяет, есть ли у пользователя дерево.
