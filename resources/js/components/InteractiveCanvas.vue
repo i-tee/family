@@ -1,7 +1,6 @@
 <template>
-  <div class="menu" id="appMenu">
-    <Menu /> <!-- Используем дочерний компонент -->
-  </div>
+
+  <div class="menu" id="appMenu"></div>
   <div id="windowcontainer" class="canvas-container" ref="canvasContainer" style="opacity: 0;">
     <div ref="canvas" class="canvas">
       <!-- Элементы внутри холста -->
@@ -12,18 +11,21 @@
         height: block.height + 'px',
       }" @click="selectBlock(block)">
         <div class="body-block">
-          <h3>{{ block.last_name }} {{ block.first_name }} {{ block.middle_name }}</h3>
-          <p>{{ block.birth_date }}</p>
           <div v-if="block.alert" style="max-width: 300px;">
             <h3>Начало</h3>
             <p>Для начала работы с семейным деревом, нужно создать первого человека</p>
-            <button type="button" onclick="document.querySelector('.js-CreatPerson')?.click();"
-              class="btn btn-primary btn-sm">Создать</button>
+            <Modal :title="'Создать'" :button-class="'btn btn-primary btn-sm js-CreatPerson'"
+              :descr="'Создайте нового члена семьи'" :button-text="'Добавить человека'" :button-confirm="'false'"
+              :component-name="'CreatPerson'" />
+          </div>
+          <div v-else="block.alert">
+            <PersonBlock :block="block" /> <!-- Используем дочерний компонент -->
           </div>
         </div>
       </div>
     </div>
   </div>
+
   <div class="map-index" id="map-index">
     <!-- Вывод информации о холсте -->
     <div class="canvas-info">
@@ -45,13 +47,15 @@
 <script>
 
 import Panzoom from '@panzoom/panzoom'; // Импортируем библиотеку Panzoom для управления масштабированием и панорамированием
-import Menu from './dashboard/Menu.vue'; // Импортируем дочерний компонент Menu
+import Modal from './Modal.vue'; // Импортируем дочерний компонент Modal
+import PersonBlock from './dashboard/PersonBlock.vue'; // Импортируем дочерний компонент PersonBlock
 import { nextTick } from 'vue'; // Импортируем nextTick из Vue для работы с асинхронными обновлениями DOM
 import { toRaw } from 'vue';
 
 export default {
   components: {
-    Menu // Регистрируем дочерний компонент Menu
+    Modal, // Регистрируем дочерний компонент Modal
+    PersonBlock // Регистрируем дочерний компонент PersonBlock
   },
   name: 'InteractiveCanvas', // Имя компонента
   data() {

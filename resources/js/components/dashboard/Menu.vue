@@ -9,6 +9,12 @@
           :component-name="'CreatPerson'" />
       </div>
 
+      <div>
+        <Modal :title="'Creat'" :button-class="'btn btn-primary btn-sm'"
+          :descr="'asvdsvsavdsa'" :button-text="'CreatXXX'" :button-confirm="'Oki'"
+           />
+      </div>
+
     </div>
   </div>
 </template>
