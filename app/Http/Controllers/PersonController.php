@@ -14,13 +14,16 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\View\View
      */
-    public function edit(Person $person)
+    public function edit($id)
     {
+        $person = Person::findOrFail($id);
 
-        // Передаем данные в Blade-шаблон
+        if (!$person->isOwnedByAuthUser()) {
+            abort(403, 'Вы не имеете прав просматривать эту персону.');
+        }
+
         return view('cabinet.person', [
-            'tree_id' => 0,
-            '$persons' => 11,
+            'person' => $person
         ]);
     }
 
@@ -31,12 +34,18 @@ class PersonController extends Controller
      * @param  \App\Models\Person  $person
      * @return \Illuminate\Http\RedirectResponse
      */
-    public function update(Request $request, Person $person)
+    public function update(Request $request, $id)
     {
+        $person = Person::findOrFail($id);
+
+        if (!$person->isOwnedByAuthUser()) {
+            abort(403, 'Вы не имеете прав редактировать эту персону.');
+        }
+
         $validated = $request->validate([
             'first_name' => 'required|string|max:255',
             'last_name' => 'required|string|max:255',
-            'middle_name' => 'string|max:255',
+            'middle_name' => 'nullable|string|max:255',
             'birth_date' => 'nullable|date',
             'death_date' => 'nullable|date',
             'tree_id' => 'nullable|exists:trees,id',
@@ -46,6 +55,7 @@ class PersonController extends Controller
 
         $person->update($validated);
 
-        return redirect()->route('dashboard.tree.show', $person->tree_id)->with('success', 'Person updated successfully.');
+        return redirect()->route('dashboard.tree.show', ['tree_id' => $person->tree_id])
+            ->with('success', 'Персона обновлена');
     }
 }

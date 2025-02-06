@@ -23,6 +23,20 @@ class Person extends Model
     ];
 
     /**
+     * Возвращает полное имя персоны.
+     *
+     * @return string
+     */
+    public function fullName()
+    {
+        return trim(implode(' ', [
+            $this->first_name,
+            $this->middle_name,
+            $this->last_name
+        ]));
+    }
+
+    /**
      * Связь с матерью.
      *
      * @return \Illuminate\Database\Eloquent\Relations\BelongsTo
@@ -84,4 +98,15 @@ class Person extends Model
 
         return false; // Центральная персона уже установлена
     }
+
+    /**
+     * Проверяет, является ли персона частью дерева, которое принадлежит авторизованному пользователю.
+     *
+     * @return bool
+     */
+    public function isOwnedByAuthUser()
+    {
+        return $this->tree && $this->tree->user_id === auth()->id();
+    }
+
 }
