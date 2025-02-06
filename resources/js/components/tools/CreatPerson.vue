@@ -27,6 +27,30 @@
                 <label for="death_date" class="form-label">Дата смерти:</label>
                 <input type="date" id="death_date" v-model="form.death_date" class="form-control" />
               </div>
+              <!-- Пол -->
+              <div class="mb-3">
+                <label class="form-label">Пол:</label><br />
+                <div class="form-check form-check-inline">
+                  <input 
+                    type="radio" 
+                    id="gender_male" 
+                    v-model="form.gender" 
+                    value="1" 
+                    class="form-check-input" 
+                  />
+                  <label for="gender_male" class="form-check-label">Мужской</label>
+                </div>
+                <div class="form-check form-check-inline">
+                  <input 
+                    type="radio" 
+                    id="gender_female" 
+                    v-model="form.gender" 
+                    value="0" 
+                    class="form-check-input" 
+                  />
+                  <label for="gender_female" class="form-check-label">Женский</label>
+                </div>
+              </div>
               <br>
               <div class="d-grid gap-2">
                 <button type="submit" class="btn btn-primary">
@@ -51,6 +75,7 @@ export default {
         middle_name: "",
         birth_date: "",
         death_date: "",
+        gender: null, // Добавлено поле для пола
         tree_id: null,
       },
     };
@@ -74,6 +99,7 @@ export default {
         middle_name: "",
         birth_date: "",
         death_date: "",
+        gender: null, // Сбрасываем поле пола
         tree_id: null,
       };
     },

@@ -51,6 +51,7 @@ class PersonController extends Controller
             'tree_id' => 'nullable|exists:trees,id',
             'mother_id' => 'nullable|exists:persons,id',
             'father_id' => 'nullable|exists:persons,id',
+            'gender' => 'required|boolean',
         ]);
 
         $person->update($validated);

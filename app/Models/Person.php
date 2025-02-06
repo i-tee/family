@@ -20,6 +20,7 @@ class Person extends Model
         'tree_id',
         'mother_id',
         'father_id',
+        'gender'
     ];
 
     /**

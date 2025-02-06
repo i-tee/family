@@ -40,6 +40,30 @@
                     </div>
 
                     <div class="mb-3">
+                        <label class="form-label">Пол</label>
+                        <div class="form-check form-check-inline">
+                            <input 
+                                type="radio" 
+                                name="gender" 
+                                value="1" 
+                                class="form-check-input" 
+                                {{ old('gender', $person->gender) == 1 ? 'checked' : '' }}
+                            />
+                            <label class="form-check-label">Мужской</label>
+                        </div>
+                        <div class="form-check form-check-inline">
+                            <input 
+                                type="radio" 
+                                name="gender" 
+                                value="0" 
+                                class="form-check-input" 
+                                {{ old('gender', $person->gender) == 0 ? 'checked' : '' }}
+                            />
+                            <label class="form-check-label">Женский</label>
+                        </div>
+                    </div>
+
+                    <div class="mb-3">
                         <label class="form-label">Мать</label>
                         @if($person->mother)
                             <a href="{{ route('persons.edit', $person->mother->id) }}"

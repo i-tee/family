@@ -28,6 +28,7 @@ class PersonController extends Controller
             'tree_id' => 'required|exists:trees,id',
             'mother_id' => 'nullable|exists:persons,id',
             'father_id' => 'nullable|exists:persons,id',
+            'gender' => 'required|boolean',
         ]);
 
         // Создаём персону
@@ -61,6 +62,7 @@ class PersonController extends Controller
             'tree_id' => 'sometimes|exists:trees,id',
             'mother_id' => 'nullable|exists:persons,id',
             'father_id' => 'nullable|exists:persons,id',
+            'gender' => 'required|boolean',
         ]);
 
         $person->update($validatedData);
