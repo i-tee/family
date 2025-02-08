@@ -15,6 +15,72 @@ class PersonController extends Controller
         return response()->json($persons);
     }
 
+    // Создать родителя
+    public function createParent($child, $parent)
+    {
+
+        // Определяем родителя в зависимости от пола
+        $childIdKey = $parent['gender'] == 1 ? 'father_id' : 'mother_id';
+
+        if (array_key_exists($childIdKey, $child) && $child[$childIdKey] !== null) {
+
+            return response()->json(['error' => 'У персоны уже есть такой родитель.'], 409);
+        } else {
+
+            // Создаем персону
+            $person = Person::create($parent);
+            $child[$childIdKey] = $person->id;
+            // Создаем новый объект Request из массива данных
+            $request = Request::create('/api/persons/' . $child['id'], 'POST', $child);
+            return $this->update($request, $child['id']);
+        }
+    }
+
+    // Создать ребенка
+    public function createChild($child, $parent)
+    {
+
+        // Определяем родителя в зависимости от пола
+        $parentIdKey = $parent['gender'] == 1 ? 'father_id' : 'mother_id';
+        $child[$parentIdKey] = $parent['id'];
+
+        // Создаем персону
+        $person = Person::create($child);
+        // Возвращаем созданную персону
+        return response()->json($person, 201);
+    }
+
+    // Встречаем данные родственных персон
+    public function relativeCreate(Request $request)
+    {
+
+        switch ($request->bio) {
+
+            case 'm':
+            case 'f':   // mother or father
+
+                $this->createParent($request->person, $request->form);
+                break;
+
+            case 's':
+            case 'd':   // son or daughter
+
+                $this->createChild($request->form, $request->person);
+                break;
+
+            default:
+                echo 'Неизвестный тип';
+                break;
+        }
+
+        //var_dump($request->bio);
+        //var_dump($request->form);
+        //var_dump($request->person);
+
+        //return response()->json($request, 201);
+
+    }
+
     // Создать новую персону
     public function store(Request $request)
     {

@@ -83,6 +83,14 @@
                         @endif
                     </div>
 
+                    <pre>
+                        {{ var_dump($person->motherFriendly()) }}
+                    </pre>
+
+                    <pre>
+                        {{ var_dump($person->fotherFriendly()) }}
+                    </pre>
+
                     <button type="submit" class="btn btn-primary">Сохранить</button>
                 </form>
             </div>

@@ -108,23 +108,9 @@ div.menu {
     background-position: -2px -2px, -2px -2px, -1px -1px, -1px -1px;
 }
 
-.personBlock {
+.personToolsBlock {
     position: absolute;
-    border: 1px solid #bfbfbf;
-    background-color: white;
-    cursor: pointer;
-    -webkit-user-select: none;
-    -moz-user-select: none;
-    user-select: none;
-    border-radius: 20px;
-}
-
-.body-block h3 {
-    font-size: 1.3em;
-}
-
-.body-block {
-    margin: 10px;
+    top: -40px;
 }
 
 .map-index {

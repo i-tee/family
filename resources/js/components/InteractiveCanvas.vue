@@ -4,14 +4,14 @@
   <div id="windowcontainer" class="canvas-container" ref="canvasContainer" style="opacity: 0;">
     <div ref="canvas" class="canvas">
       <!-- Элементы внутри холста -->
-      <div v-for="(block, index) in blocks" :key="index" class="personBlock" :data-id="block.id" :style="{
+      <div v-for="(block, index) in blocks" :key="index" class="card person-card" :data-id="block.id" :style="{
         top: block.top + 'px',
         left: block.left + 'px',
         width: block.width + 'px',
         height: block.height + 'px',
       }" @click="selectBlock(block)">
-        <div class="body-block">
-          <div v-if="block.alert" style="max-width: 300px;">
+        <div>
+          <div v-if="block.alert">
             <h3>Начало</h3>
             <p>Для начала работы с семейным деревом, нужно создать первого человека</p>
             <Modal :title="'Создать'" :button-class="'btn btn-primary btn-sm js-CreatPerson'"

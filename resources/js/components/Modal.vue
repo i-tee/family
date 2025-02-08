@@ -1,7 +1,7 @@
 <template>
     <!-- Кнопка для открытия модального окна -->
     <button type="button" :class="buttonClass" @click="openModal">
-        {{ buttonText }}
+        {{ text() }} <i v-if="getIconClass()" :class="getIconClass()"></i>
     </button>
 
     <!-- Модальное окно -->
@@ -16,35 +16,34 @@
                     <div class="p-3">{{ descr }}</div>
                     <!-- Динамически загружаемый компонент -->
                     <div class="modal-body">
-                        <component :is="dynamicComponent" />
+                        <component :is="dynamicComponent" :person="person"/>
                     </div>
-
                     <div class="modal-footer">
-                        <button type="button" class="btn btn-secondary" @click="closeModal">Закрыть</button>
+                        <!-- <button type="button" class="btn btn-secondary" @click="closeModal">Закрыть</button> -->
                         <button v-if="isButtonConfirm" type="button" class="btn btn-primary">{{ buttonConfirm
                             }}</button>
                     </div>
                 </div>
             </div>
         </div>
+        <!-- Затемнение фона -->
+        <div class="modal-backdrop fade" :class="{ show: isOpen }" :style="{ display: isOpen ? 'block' : 'none' }"></div>
     </teleport>
-
-    <!-- Затемнение фона -->
-    <div class="modal-backdrop fade" :class="{ show: isOpen }" :style="{ display: isOpen ? 'block' : 'none' }"></div>
 
 </template>
 
 <script>
-
 import { defineAsyncComponent } from 'vue';
 
 export default {
     props: {
         title: String,
+        person: Object,
         descr: String,
         buttonText: String,
         buttonClass: String,
         buttonConfirm: String,
+        icon: String,
         componentName: String // Передаем имя компонента
     },
     data() {
@@ -55,7 +54,6 @@ export default {
     computed: {
         dynamicComponent() {
             if (!this.componentName) return null; // Если не передали компонент, ничего не рендерим
-
             return defineAsyncComponent(() => import(`./tools/${this.componentName}.vue`));
         },
         isButtonConfirm() {
@@ -75,7 +73,19 @@ export default {
         },
         closeModal() {
             this.isOpen = false;
+        },
+        getIconClass() {
+            // Если this.icon существует и не является пустой строкой, возвращаем его
+            // Иначе возвращаем null (чтобы не рендерить <i>)
+            return this.icon?.trim() ? this.icon : null;
+        },
+        text() {
+            // Возвращаем buttonText, если он существует и не пустой
+            return this.buttonText?.trim() ? this.buttonText : '';
         }
+    },
+    mounted(){
+        //console.log(this.person)
     }
 };
 </script>

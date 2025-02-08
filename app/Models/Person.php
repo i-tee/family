@@ -110,4 +110,28 @@ class Person extends Model
         return $this->tree && $this->tree->user_id === auth()->id();
     }
 
+    /**
+     * Возвращает список персон женского пола, которые старше текущей персоны и относятся к тому же дереву.
+     *
+     * @return \Illuminate\Support\Collection
+     */
+    public function motherFriendly()
+    {
+        return Person::where('gender', 'famale')
+        ->where('tree_id', $this->tree_id)
+        ->when($this->birth_date, function ($query) {
+            return $query->whereDate('birth_date', '<', $this->birth_date);
+        })
+        ->get();
+    }
+    public function fotherFriendly()
+    {
+        return Person::where('gender', 'male')
+        ->where('tree_id', $this->tree_id)
+        ->when($this->birth_date, function ($query) {
+            return $query->whereDate('birth_date', '<', $this->birth_date);
+        })
+        ->get();
+    }
+
 }

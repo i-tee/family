@@ -34,6 +34,7 @@ Route::prefix('trees')->middleware('auth:sanctum')->group(function () {
 Route::prefix('persons')->middleware('auth:sanctum')->group(function () {
     Route::get('/', [PersonController::class, 'index']); // Получить список персон
     Route::post('/', [PersonController::class, 'store']); // Создать новую персону
+    Route::post('/relative', [PersonController::class, 'relativeCreate']); // Создать новую родственную персону
     Route::get('/{id}', [PersonController::class, 'show']); // Получить конкретную персону
     Route::get('/tree/{tree_id}', [PersonController::class, 'byTree']); // Получить персоны конкретного дерева
     Route::put('/{id}', [PersonController::class, 'update']); // Обновить персону
