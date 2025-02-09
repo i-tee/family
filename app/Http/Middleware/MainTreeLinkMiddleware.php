@@ -29,6 +29,7 @@ class MainTreeLinkMiddleware
                     'mainTreeLink' => route('dashboard.tree.show', ['tree_id' => $tree->id]),
                     'mainTreeName' => $tree->name,
                     'mainTreeId'   => $tree->id,
+                    'mainTree'   => $tree->only($tree->getFillable()),
                 ];
             } else {
                 // Если дерево не найдено, используем альтернативные значения
@@ -36,6 +37,7 @@ class MainTreeLinkMiddleware
                     'mainTreeLink' => route('dashboard'),
                     'mainTreeName' => null,
                     'mainTreeId'   => null,
+                    'mainTree'   => null,
                 ];
             }
         } else {
@@ -44,6 +46,7 @@ class MainTreeLinkMiddleware
                 'mainTreeLink' => route('dashboard'),
                 'mainTreeName' => null,
                 'mainTreeId'   => null,
+                'mainTree'   => null,
             ];
         }
 

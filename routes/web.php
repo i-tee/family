@@ -27,9 +27,6 @@ Route::middleware(['auth', 'verified'])->group(function () {
 
     });
 
-    Route::get('/dd', function () {
-        return view('dd');
-    })->name('dd');
+    Route::get('/dd/{tree_id}', [DashboardController::class, 'dd'])->name('dd');
     
-
 });
