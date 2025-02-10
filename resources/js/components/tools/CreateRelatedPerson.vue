@@ -2,25 +2,60 @@
     <div>
         <p>Прямая биологическая связь</p>
         <div class="btn-group" role="group" aria-label="Basic radio toggle button group">
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio1" v-model="type" value="m"
-                autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio1">Мать</label>
+            <!-- Мать -->
+            <input 
+                type="radio" 
+                class="btn-check" 
+                :name="`btnradio-${person.id}`" 
+                :id="`btnradio1-${person.id}`" 
+                v-model="type" 
+                value="m" 
+                autocomplete="off"
+                :disabled="person.mother_id !== null"
+            >
+            <label class="btn btn-outline-primary" :for="`btnradio1-${person.id}`">Мать</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio2" v-model="type" value="f"
-                autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio2">Отец</label>
+            <!-- Отец -->
+            <input 
+                type="radio" 
+                class="btn-check" 
+                :name="`btnradio-${person.id}`" 
+                :id="`btnradio2-${person.id}`" 
+                v-model="type" 
+                value="f" 
+                autocomplete="off"
+                :disabled="person.father_id !== null"
+            >
+            <label class="btn btn-outline-primary" :for="`btnradio2-${person.id}`">Отец</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio3" v-model="type" value="s"
-                autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio3">Сын</label>
+            <!-- Сын -->
+            <input 
+                type="radio" 
+                class="btn-check" 
+                :name="`btnradio-${person.id}`" 
+                :id="`btnradio3-${person.id}`" 
+                v-model="type" 
+                value="s" 
+                autocomplete="off"
+            >
+            <label class="btn btn-outline-primary" :for="`btnradio3-${person.id}`">Сын</label>
 
-            <input type="radio" class="btn-check" name="btnradio" id="btnradio4" v-model="type" value="d"
-                autocomplete="off">
-            <label class="btn btn-outline-primary" for="btnradio4">Дочь</label>
+            <!-- Дочь -->
+            <input 
+                type="radio" 
+                class="btn-check" 
+                :name="`btnradio-${person.id}`" 
+                :id="`btnradio4-${person.id}`" 
+                v-model="type" 
+                value="d" 
+                autocomplete="off"
+                checked
+            >
+            <label class="btn btn-outline-primary" :for="`btnradio4-${person.id}`">Дочь</label>
         </div>
     </div>
     <div>
-        <PersonBlock :person="person" :bio="type" :hideGender="true" :apiLink="'/relative'"/>
+        <PersonBlock :person="person" :bio="type" :hideGender="true" :apiLink="'/relative'" />
     </div>
 </template>
 
@@ -32,7 +67,7 @@ export default {
         PersonBlock // Регистрируем дочерний компонент
     },
     props: {
-        person: Object,
+        person: Object, // Принимаем объект person как пропс
     },
     data() {
         return {

@@ -66,7 +66,7 @@
                     <div class="mb-3">
                         <label class="form-label">Мать</label>
                         @if($person->mother)
-                            <a href="{{ route('persons.edit', $person->mother->id) }}"
+                            <a href="{{ route('dashboard.person.edit', $person->mother_id) }}"
                                 class="d-block">{{ $person->mother->fullName() }}</a>
                         @else
                             <span class="text-muted">Нет данных</span>
@@ -76,7 +76,7 @@
                     <div class="mb-3">
                         <label class="form-label">Отец</label>
                         @if($person->father)
-                            <a href="{{ route('persons.edit', $person->father->id) }}"
+                            <a href="{{ route('dashboard.person.edit', $person->father_id) }}"
                                 class="d-block">{{ $person->father->fullName() }}</a>
                         @else
                             <span class="text-muted">Нет данных</span>

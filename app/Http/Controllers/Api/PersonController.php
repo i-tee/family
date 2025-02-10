@@ -4,7 +4,10 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Person;
+use App\Models\Tree;
 use Illuminate\Http\Request;
+
+use App\Services\TreeService;
 
 class PersonController extends Controller
 {
@@ -151,5 +154,23 @@ class PersonController extends Controller
         $person = Person::findOrFail($id);
         $person->delete();
         return response()->json(null, 204);
+    }
+
+    public function coordinatePersons($tree_id){
+
+        // Ищем всех персон с указанным tree_id
+        $persons = Person::where('tree_id', $tree_id)->get();
+
+        // Получаем центральную персону дерева
+        $tree = Tree::find($tree_id);
+        $centralId = $tree->cp_id;
+
+        // Создаем экземпляр сервиса и рассчитываем координаты
+        $treeCoordinateService = new TreeService();
+        $personsWithCoordinates = $treeCoordinateService->calculateCoordinates($persons->toArray(), $centralId);
+        
+
+        return $personsWithCoordinates;
+
     }
 }

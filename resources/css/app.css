@@ -98,6 +98,10 @@ div.menu {
     background: rgb(247, 247, 247);
 }
 
+.person-card {
+    position: absolute;
+}
+
 .canvas {
     position: absolute;
     min-width: 5000px;
@@ -109,8 +113,7 @@ div.menu {
 }
 
 .personToolsBlock {
-    position: absolute;
-    top: -40px;
+    float: right;
 }
 
 .map-index {

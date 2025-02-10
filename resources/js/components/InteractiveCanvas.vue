@@ -4,7 +4,7 @@
   <div id="windowcontainer" class="canvas-container" ref="canvasContainer" style="opacity: 0;">
     <div ref="canvas" class="canvas">
       <!-- Элементы внутри холста -->
-      <div v-for="(block, index) in blocks" :key="index" class="card person-card" :data-id="block.id" :style="{
+      <div v-for="(block, index) in blocks" :key="index" class="person-card" :data-id="block.id" :style="{
         top: block.top + 'px',
         left: block.left + 'px',
         width: block.width + 'px',
@@ -37,9 +37,6 @@
     <input type="number" v-model.number="targetX" placeholder="X">
     <input type="number" v-model.number="targetY" placeholder="Y">
     <button @click="centerCanvasOnCoordinates(targetX, targetY)">Go</button>
-    <button @click="fetchTree()">fetchTree</button>
-    <button @click="checkCP()">checkCP</button>
-    <button @click="fetchPersons()">fetchPersons</button>
   </div>
 
 </template>
@@ -73,7 +70,7 @@ export default {
       staticCenterX: 0, // Координата X центра холста (без учета смещения)
       staticCenterY: 0, // Координата Y центра холста (без учета смещения)
       panzoomInstance: null, // Экземпляр Panzoom для управления холстом
-      targetX: 2331, // Целевая координата X для центрирования
+      targetX: 2000, // Целевая координата X для центрирования
       targetY: 2475, // Целевая координата Y для центрирования
       containerWidth: 0, // Ширина контейнера, в котором находится холст
       containerHeight: 0, // Высота контейнера, в котором находится холст
@@ -96,6 +93,7 @@ export default {
         this.canvasX = x; // Обновляем позицию холста по X
         this.canvasY = y; // Обновляем позицию холста по Y
       });
+
     },
 
     CreatFirstPersonBlock() {
@@ -119,11 +117,40 @@ export default {
         try {
           const response = await axios.get('/api/persons/tree/' + window.tree_id);
           this.persons = response.data;
-          //console.log(toRaw(this.persons));
+          console.log(toRaw(this.persons));
         } catch (error) {
           console.error('Ошибка при загрузке персон:', error);
         }
       }
+    },
+
+    async getPersons() {
+
+      try {
+        const response = await axios.get('/api/persons/coordinate/' + window.tree_id);
+
+        response.data.forEach(person => {
+
+          person.width = canvasSetting.width;
+          person.height = canvasSetting.height;
+
+          let left = (canvasSetting.width + canvasSetting.horizontal_margin) * person.x + this.staticCenterX;
+          let top = (canvasSetting.height + canvasSetting.vertical_margin) * -person.y + this.staticCenterY;
+
+          person.left = left;
+          person.top = top;
+
+          console.log(`person: ${person.first_name} left: ${person.left} top: ${person.top} width: ${person.width} height: ${person.height}`);
+
+          this.blocks.push(person);
+
+        });
+
+
+      } catch (error) {
+        console.error('Ошибка при загрузке персон с координатами:', error);
+      }
+
     },
 
     async checkCP() {
@@ -268,16 +295,11 @@ export default {
 
     this.fetchTree().then(async () => {
       if (await this.checkCP()) {
-        //console.log(toRaw(this.personCenter));
-        this.blocks.push(this.personCenter);
-        //console.log(toRaw(this.blocks));
+        this.getPersons();
       } else {
         this.CreatFirstPersonBlock();
-        //console.log('Центральная персона не установлена.');
       }
     });
-
-    //console.log(toRaw(this.canvasSetting));
 
   },
 };
